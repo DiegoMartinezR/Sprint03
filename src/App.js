@@ -1,28 +1,47 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-
+import MyMap from './components/Map';
+import 'materialize-css/dist/css/materialize.min.css';
 class App extends Component {
+
+
+ constructor(){
+  super();
+  this.state= {
+    markers: []
+  }
+}
+
+ componentDidMount(){
+
+        fetch('http://geolocation-diegomr.c9users.io/api/geolocalizar/')
+          .then((response) => {
+            return response.json()
+            
+          })
+          .then(loc=>{
+            this.setState({ markers: loc });
+          });
+        
+    }
+
   render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+    const {markers}=this.state;
+
+    return(
+
+   
+        <div className="App">
+          <div className="card">
+            <div className="card-content">
+            <MyMap ref="map" markers={markers}/>
+            </div>
+          </div>
+        </div>
+
     );
   }
+
 }
 
 export default App;
